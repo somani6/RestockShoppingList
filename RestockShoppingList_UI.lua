@@ -284,7 +284,6 @@ function UI:HandleAddItem(text)
     end
 
     Core:AddItemToList(currentListIndex, itemID, 1, 3)
-    self:RefreshItems()
     return true
 end
 
@@ -335,15 +334,35 @@ function UI:RefreshItems()
     nameLabel:SetWidth(250)
     headerGroup:AddChild(nameLabel)
 
+    local spacer1 = AceGUI:Create("Label")
+    spacer1:SetText(" ")
+    spacer1:SetWidth(10)
+    headerGroup:AddChild(spacer1)
+
     local qtyLabel = AceGUI:Create("Label")
     qtyLabel:SetText("Qty")
     qtyLabel:SetWidth(75)
     headerGroup:AddChild(qtyLabel)
 
+    local spacer2 = AceGUI:Create("Label")
+    spacer2:SetText(" ")
+    spacer2:SetWidth(10)
+    headerGroup:AddChild(spacer2)
+
     local qualityLabel = AceGUI:Create("Label")
     qualityLabel:SetText("Quality")
     qualityLabel:SetWidth(75)
     headerGroup:AddChild(qualityLabel)
+
+    local spacer3 = AceGUI:Create("Label")
+    spacer3:SetText(" ")
+    spacer3:SetWidth(10)
+    headerGroup:AddChild(spacer3)
+
+    local priceLabel = AceGUI:Create("Label")
+    priceLabel:SetText("Price")
+    priceLabel:SetWidth(100)
+    headerGroup:AddChild(priceLabel)
 
     local delSpacer = AceGUI:Create("Label")
     delSpacer:SetText(" ")
@@ -383,6 +402,11 @@ function UI:RefreshItems()
         label:SetWidth(250)
         itemGroup:AddChild(label)
 
+        local spacer1 = AceGUI:Create("Label")
+        spacer1:SetText(" ")
+        spacer1:SetWidth(10)
+        itemGroup:AddChild(spacer1)
+
         local qtyEdit = AceGUI:Create("EditBox")
         qtyEdit:SetWidth(75)
         qtyEdit:SetText(item.qty)
@@ -390,6 +414,11 @@ function UI:RefreshItems()
             Core:UpdateItem(currentListIndex, i, tonumber(text) or 1, item.quality)
         end)
         itemGroup:AddChild(qtyEdit)
+
+        local spacer2 = AceGUI:Create("Label")
+        spacer2:SetText(" ")
+        spacer2:SetWidth(10)
+        itemGroup:AddChild(spacer2)
 
         local qualityDropdown = AceGUI:Create("Dropdown")
         local qualityList = {
@@ -406,6 +435,25 @@ function UI:RefreshItems()
             item.quality = key -- Update our local copy for the qtyEdit callback
         end)
         itemGroup:AddChild(qualityDropdown)
+
+        local spacer3 = AceGUI:Create("Label")
+        spacer3:SetText(" ")
+        spacer3:SetWidth(10)
+        itemGroup:AddChild(spacer3)
+
+        local price = 0
+        if Auctionator and Auctionator.API and Auctionator.API.v1 and Auctionator.API.v1.GetAuctionPriceByItemID then
+            price = Auctionator.API.v1.GetAuctionPriceByItemID("RestockShoppingList", item.itemID) or 0
+        end
+
+        local priceLabel = AceGUI:Create("Label")
+        if price > 0 then
+            priceLabel:SetText(GetCoinTextureString(price))
+        else
+            priceLabel:SetText("-")
+        end
+        priceLabel:SetWidth(100)
+        itemGroup:AddChild(priceLabel)
 
         local delBtn = AceGUI:Create("Button")
         delBtn:SetText("X")

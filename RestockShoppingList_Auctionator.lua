@@ -4,8 +4,6 @@ local Core = addonTable.Core
 -- --- Auctionator Integration ---
 
 function Core:CleanupAuctionatorLists()
-    if not Auctionator or not Auctionator.API or not Auctionator.API.v1 then return end
-
     for _, list in ipairs(self.db.char.lists) do
         --Auctionator.API.v1.DeleteShoppingList("RSL", "RSL: " .. list.name) This function is not yet implemented in Auctionator
     end
