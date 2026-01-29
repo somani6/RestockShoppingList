@@ -1,5 +1,6 @@
 local addonName, addonTable = ...
 local Core = addonTable.Core
+local L = LibStub("AceLocale-3.0"):GetLocale(addonName)
 
 function Core:ExportList(index)
     local list = self.db.char.lists[index]
@@ -10,12 +11,12 @@ end
 function Core:ImportList(dataString)
     local success, list = self:Deserialize(dataString)
     if not success then
-        self:Print("Import failed: Invalid data.")
+        self:Print(L["ERROR_IMPORT_INVALID_DATA"])
         return false
     end
     
     if type(list) ~= "table" or not list.name or not list.items then
-        self:Print("Import failed: Invalid list format.")
+        self:Print(L["ERROR_IMPORT_INVALID_FORMAT"])
         return false
     end
 
@@ -30,11 +31,11 @@ function Core:ImportList(dataString)
 
     if existingIndex then
         self.db.char.lists[existingIndex] = list
-        self:Print("List '"..list.name.."' has been updated.")
+        self:Print(L["MSG_LIST_UPDATED"]:format(list.name))
         addonTable.UI:SelectList(existingIndex)
     else
         table.insert(self.db.char.lists, list)
-        self:Print("List '"..list.name.."' has been imported.")
+        self:Print(L["MSG_LIST_IMPORTED"]:format(list.name))
         addonTable.UI:SelectList(#self.db.char.lists)
     end
     return true

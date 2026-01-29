@@ -4,6 +4,7 @@ local UI = {}
 addonTable.UI = UI
 local Core = addonTable.Core
 local AceGUI = LibStub("AceGUI-3.0")
+local L = LibStub("AceLocale-3.0"):GetLocale(addonName)
 
 local currentListIndex = nil
 
@@ -27,8 +28,8 @@ function UI:Initialize()
     if self.frame then return end
 
     self.frame = AceGUI:Create("Frame")
-    self.frame:SetTitle("Restock Shopping List")
-    self.frame:SetStatusText("Restock Shopping List")
+    self.frame:SetTitle(L["TITLE"])
+    self.frame:SetStatusText(L["TITLE"])
     self.frame:SetCallback("OnClose", function(widget) widget.frame:Hide() end)
     self.frame:SetLayout("Flow")
     self.frame:SetWidth(755)
@@ -44,7 +45,7 @@ function UI:Initialize()
     self.frame:AddChild(topContainer)
 
     self.listDropdown = AceGUI:Create("Dropdown")
-    self.listDropdown:SetLabel("List")
+    self.listDropdown:SetLabel(L["LIST_LABEL"])
     self.listDropdown:SetCallback("OnValueChanged", function(widget, event, key)
         currentListIndex = key
         self:RefreshItems()
@@ -53,7 +54,7 @@ function UI:Initialize()
     topContainer:AddChild(self.listDropdown)
 
     local addListButton = AceGUI:Create("Button")
-    addListButton:SetText("Add")
+    addListButton:SetText(L["ADD"])
     addListButton:SetWidth(100)
     addListButton:SetCallback("OnClick", function()
         StaticPopup_Show("RSL_NEW_LIST")
@@ -61,7 +62,7 @@ function UI:Initialize()
     topContainer:AddChild(addListButton)
 
     self.deleteListButton = AceGUI:Create("Button")
-    self.deleteListButton:SetText("Delete")
+    self.deleteListButton:SetText(L["DELETE"])
     self.deleteListButton:SetWidth(100)
     self.deleteListButton:SetCallback("OnClick", function()
         if currentListIndex then
@@ -82,7 +83,7 @@ function UI:Initialize()
     topContainer:AddChild(self.deleteListButton)
 
     self.renameListButton = AceGUI:Create("Button")
-    self.renameListButton:SetText("Rename")
+    self.renameListButton:SetText(L["RENAME"])
     self.renameListButton:SetWidth(100)
     self.renameListButton:SetCallback("OnClick", function()
         if currentListIndex then
@@ -92,7 +93,7 @@ function UI:Initialize()
     topContainer:AddChild(self.renameListButton)
 
     self.exportListButton = AceGUI:Create("Button")
-    self.exportListButton:SetText("Export")
+    self.exportListButton:SetText(L["EXPORT"])
     self.exportListButton:SetWidth(100)
     self.exportListButton:SetCallback("OnClick", function()
         if currentListIndex then
@@ -105,7 +106,7 @@ function UI:Initialize()
     topContainer:AddChild(self.exportListButton)
 
     self.importListButton = AceGUI:Create("Button")
-    self.importListButton:SetText("Import")
+    self.importListButton:SetText(L["IMPORT"])
     self.importListButton:SetWidth(100)
     self.importListButton:SetCallback("OnClick", function()
         StaticPopup_Show("RSL_IMPORT")
@@ -125,7 +126,7 @@ function UI:Initialize()
     self.frame:AddChild(addItemContainer)
 
     self.addItemEdit = AceGUI:Create("EditBox")
-    self.addItemEdit:SetLabel("Add Item")
+    self.addItemEdit:SetLabel(L["ADD_ITEM"])
     self.addItemEdit:SetWidth(200)
     self.addItemEdit:SetCallback("OnEnterPressed", function(widget, event, text)
         if self:HandleAddItem(text) then
@@ -135,7 +136,7 @@ function UI:Initialize()
     addItemContainer:AddChild(self.addItemEdit)
 
     self.addItemButton = AceGUI:Create("Button")
-    self.addItemButton:SetText("Add Item")
+    self.addItemButton:SetText(L["ADD_ITEM"])
     self.addItemButton:SetWidth(150)
     self.addItemButton:SetCallback("OnClick", function()
         if self:HandleAddItem(self.addItemEdit:GetText()) then
@@ -153,9 +154,9 @@ function UI:Initialize()
     
     -- Popups
     StaticPopupDialogs["RSL_NEW_LIST"] = {
-        text = "Name of the new list:",
-        button1 = "Create",
-        button2 = "Cancel",
+        text = L["NEW_LIST_POPUP_TEXT"],
+        button1 = L["CREATE"],
+        button2 = L["CANCEL"],
         hasEditBox = true,
         OnShow = function(self)
             if self.data then
@@ -183,9 +184,9 @@ function UI:Initialize()
         hideOnEscape = true,
     }
     StaticPopupDialogs["RSL_RENAME_LIST"] = {
-        text = "New name for the list:",
-        button1 = "Rename",
-        button2 = "Cancel",
+        text = L["RENAME_LIST_POPUP_TEXT"],
+        button1 = L["RENAME"],
+        button2 = L["CANCEL"],
         hasEditBox = true,
         OnShow = function(self)
             if self.data then
@@ -219,8 +220,8 @@ function UI:Initialize()
         hideOnEscape = true,
     }
     StaticPopupDialogs["RSL_EXPORT"] = {
-        text = "Export Code (Ctrl+C to copy):",
-        button1 = "Close",
+        text = L["EXPORT_POPUP_TEXT"],
+        button1 = L["CLOSE"],
         hasEditBox = true,
         OnShow = function(self)
             if self.data then
@@ -236,9 +237,9 @@ function UI:Initialize()
         hideOnEscape = true,
     }
     StaticPopupDialogs["RSL_IMPORT"] = {
-        text = "Paste Export Code here:",
-        button1 = "Import",
-        button2 = "Cancel",
+        text = L["IMPORT_POPUP_TEXT"],
+        button1 = L["IMPORT"],
+        button2 = L["CANCEL"],
         hasEditBox = true,
         OnAccept = function(self)
             local text = self.EditBox:GetText()
@@ -279,7 +280,7 @@ function UI:HandleAddItem(text)
     end
 
     if not itemID then
-        Core:Print("Could not find item: " .. text)
+        Core:Print(L["ERROR_ITEM_NOT_FOUND"]:format(text))
         return false
     end
 
@@ -330,7 +331,7 @@ function UI:RefreshItems()
     headerGroup:AddChild(iconHeader)
 
     local nameLabel = AceGUI:Create("Label")
-    nameLabel:SetText("Item Name")
+    nameLabel:SetText(L["HEADER_ITEM_NAME"])
     nameLabel:SetWidth(250)
     headerGroup:AddChild(nameLabel)
 
@@ -340,7 +341,7 @@ function UI:RefreshItems()
     headerGroup:AddChild(spacer1)
 
     local qtyLabel = AceGUI:Create("Label")
-    qtyLabel:SetText("Qty")
+    qtyLabel:SetText(L["HEADER_QTY"])
     qtyLabel:SetWidth(75)
     headerGroup:AddChild(qtyLabel)
 
@@ -350,7 +351,7 @@ function UI:RefreshItems()
     headerGroup:AddChild(spacer2)
 
     local qualityLabel = AceGUI:Create("Label")
-    qualityLabel:SetText("Quality")
+    qualityLabel:SetText(L["HEADER_QUALITY"])
     qualityLabel:SetWidth(75)
     headerGroup:AddChild(qualityLabel)
 
@@ -360,7 +361,7 @@ function UI:RefreshItems()
     headerGroup:AddChild(spacer3)
 
     local priceLabel = AceGUI:Create("Label")
-    priceLabel:SetText("Price")
+    priceLabel:SetText(L["HEADER_PRICE"])
     priceLabel:SetWidth(100)
     headerGroup:AddChild(priceLabel)
 
@@ -396,7 +397,7 @@ function UI:RefreshItems()
         iconLabel:SetWidth(30)
         itemGroup:AddChild(iconLabel)
 
-        local itemName = GetItemInfo(item.itemID) or ("Item " .. item.itemID)
+        local itemName = GetItemInfo(item.itemID) or (L["ITEM_FALLBACK"]:format(item.itemID))
         local label = AceGUI:Create("Label")
         label:SetText(itemName)
         label:SetWidth(250)
@@ -422,7 +423,7 @@ function UI:RefreshItems()
 
         local qualityDropdown = AceGUI:Create("Dropdown")
         local qualityList = {
-            [0] = "Any",
+            [0] = L["QUALITY_ANY"],
             [1] = "|A:Professions-Icon-Quality-Tier1-Small:16:16|a",
             [2] = "|A:Professions-Icon-Quality-Tier2-Small:16:16|a",
             [3] = "|A:Professions-Icon-Quality-Tier3-Small:16:16|a"

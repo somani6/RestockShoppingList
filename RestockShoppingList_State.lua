@@ -1,5 +1,6 @@
 local addonName, addonTable = ...
 local Core = addonTable.Core
+local L = LibStub("AceLocale-3.0"):GetLocale(addonName)
 
 -- --- Data Management ---
 
@@ -11,7 +12,7 @@ function Core:AddList(name)
     -- Check for duplicate name (case-insensitive)
     for _, list in ipairs(self.db.char.lists) do
         if strlower(list.name) == strlower(name) then
-            self:Print("A list with the name '"..name.."' already exists.")
+            self:Print(L["ERROR_LIST_EXISTS"]:format(name))
             return false
         end
     end
@@ -30,7 +31,7 @@ function Core:RenameList(index, newName)
      -- Check for duplicate name (case-insensitive)
     for i, list in ipairs(self.db.char.lists) do
         if i ~= index and strlower(list.name) == strlower(newName) then
-            self:Print("A list with the name '"..newName.."' already exists.")
+            self:Print(L["ERROR_LIST_EXISTS"]:format(newName))
             return false
         end
     end

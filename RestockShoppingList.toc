@@ -16,10 +16,12 @@ Libs\AceEvent-3.0\AceEvent-3.0.xml
 Libs\AceDB-3.0\AceDB-3.0.xml
 Libs\AceConsole-3.0\AceConsole-3.0.xml
 Libs\AceGUI-3.0\AceGUI-3.0.xml
+Libs\AceLocale-3.0\AceLocale-3.0.xml
 Libs\AceSerializer-3.0\AceSerializer-3.0.xml
 
 # Addon Files
 RestockShoppingList.lua
+RestockShoppingList_Locale.lua
 RestockShoppingList_State.lua
 RestockShoppingList_Export.lua
 RestockShoppingList_Auctionator.lua
