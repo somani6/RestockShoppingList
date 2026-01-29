@@ -1,0 +1,26 @@
+## Interface: 120000
+## Title: RestockShoppingList
+## Notes: Automatically restock items via Auctionator shopping lists
+## Author: Somani
+## Version: 1.0
+## Category: Auctions
+## SavedVariables: RestockShoppingListDB
+## RequiredDeps: Auctionator
+## OptionalDeps: Ace3
+
+# Libraries
+Libs\LibStub\LibStub.lua
+Libs\CallbackHandler-1.0\CallbackHandler-1.0.xml
+Libs\AceAddon-3.0\AceAddon-3.0.xml
+Libs\AceEvent-3.0\AceEvent-3.0.xml
+Libs\AceDB-3.0\AceDB-3.0.xml
+Libs\AceConsole-3.0\AceConsole-3.0.xml
+Libs\AceGUI-3.0\AceGUI-3.0.xml
+Libs\AceSerializer-3.0\AceSerializer-3.0.xml
+
+# Addon Files
+RestockShoppingList.lua
+RestockShoppingList_State.lua
+RestockShoppingList_Export.lua
+RestockShoppingList_Auctionator.lua
+RestockShoppingList_UI.lua
