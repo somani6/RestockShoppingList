@@ -43,25 +43,26 @@ function Core:RenameList(index, newName)
     return false
 end
 
-function Core:AddItemToList(listIndex, itemID, name, qty, quality)
+function Core:AddItemToList(listIndex, itemID, qty, quality)
     if not self.db.char.lists[listIndex] then return end
 
     -- Check for duplicates
     for _, item in ipairs(self.db.char.lists[listIndex].items) do
-        if (itemID and itemID ~= 0 and item.itemID == itemID) or (name and strlower(item.name) == strlower(name)) then
+        if item.itemID == itemID then
             return
         end
     end
 
     table.insert(self.db.char.lists[listIndex].items, {
         itemID = itemID,
-        name = name,
         qty = qty or 1,
         quality = quality or 0 -- 0=Egal, 1=T1, 2=T2, 3=T3
     })
 
     table.sort(self.db.char.lists[listIndex].items, function(a, b)
-        return strlower(a.name) < strlower(b.name)
+        local nameA = GetItemInfo(a.itemID) or tostring(a.itemID)
+        local nameB = GetItemInfo(b.itemID) or tostring(b.itemID)
+        return strlower(nameA) < strlower(nameB)
     end)
 
     addonTable.UI:RefreshItems(listIndex)

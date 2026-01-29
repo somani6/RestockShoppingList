@@ -15,6 +15,7 @@ function Core:ExportToAuctionator()
     for i, list in ipairs(self.db.char.lists) do
         local rsl_searchStrings = {}
         for j, item in ipairs(list.items) do
+            local itemName = GetItemInfo(item.itemID)
             -- Convert quality to string for Auctionator
             local tierStr = nil
             if item.quality == 1 then tierStr = "1"
@@ -22,10 +23,10 @@ function Core:ExportToAuctionator()
             elseif item.quality == 3 then tierStr = "3"
             end
             local rsl_itemCount = C_Item.GetItemCount(item.itemID, true, true, true, true)
-            if item.qty > rsl_itemCount then
+            if itemName and item.qty > rsl_itemCount then
                 local rsl_buyAmount = item.qty - rsl_itemCount
                 table.insert(rsl_searchStrings, Auctionator.API.v1.ConvertToSearchString("RSL", { 
-                    searchString = item.name, 
+                    searchString = itemName, 
                     isExact = true, 
                     categoryKey = nil, 
                     tier = tierStr, 

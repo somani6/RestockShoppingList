@@ -128,8 +128,9 @@ function UI:Initialize()
     self.addItemEdit:SetLabel("Add Item")
     self.addItemEdit:SetWidth(200)
     self.addItemEdit:SetCallback("OnEnterPressed", function(widget, event, text)
-        self:HandleAddItem(text)
-        widget:SetText("")
+        if self:HandleAddItem(text) then
+            widget:SetText("")
+        end
     end)
     addItemContainer:AddChild(self.addItemEdit)
 
@@ -137,8 +138,9 @@ function UI:Initialize()
     self.addItemButton:SetText("Add Item")
     self.addItemButton:SetWidth(150)
     self.addItemButton:SetCallback("OnClick", function()
-        self:HandleAddItem(self.addItemEdit:GetText())
-        self.addItemEdit:SetText("")
+        if self:HandleAddItem(self.addItemEdit:GetText()) then
+            self.addItemEdit:SetText("")
+        end
     end)
     addItemContainer:AddChild(self.addItemButton)
 
@@ -260,31 +262,30 @@ end
 function UI:HandleAddItem(text)
     if not currentListIndex then
         -- This check is now backed up by disabled controls
-        return
+        return false
     end
-    if text == "" then return end
+    if text == "" then return false end
 
-    local itemID, itemName
+    local itemID
     if string.match(text, "item:(%d+)") then
         itemID = tonumber(string.match(text, "item:(%d+)"))
-        itemName = GetItemInfo(itemID)
     elseif tonumber(text) then
         itemID = tonumber(text)
-        itemName = GetItemInfo(itemID)
     else
-        itemName = text
-        local _, link = GetItemInfo(itemName)
+        local _, link = GetItemInfo(text)
         if link then
             itemID = tonumber(string.match(link, "item:(%d+)"))
-        else
-            itemID = 0 -- Fallback, maybe notify user?
         end
     end
 
-    if not itemName then itemName = text end
+    if not itemID then
+        Core:Print("Could not find item: " .. text)
+        return false
+    end
 
-    Core:AddItemToList(currentListIndex, itemID, itemName, 1, 3)
+    Core:AddItemToList(currentListIndex, itemID, 1, 3)
     self:RefreshItems()
+    return true
 end
 
 function UI:SelectList(index)
@@ -376,8 +377,9 @@ function UI:RefreshItems()
         iconLabel:SetWidth(30)
         itemGroup:AddChild(iconLabel)
 
+        local itemName = GetItemInfo(item.itemID) or ("Item " .. item.itemID)
         local label = AceGUI:Create("Label")
-        label:SetText(item.name)
+        label:SetText(itemName)
         label:SetWidth(250)
         itemGroup:AddChild(label)
 
