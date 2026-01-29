@@ -7,7 +7,6 @@ RestockShoppingList ist ein World of Warcraft Addon, das hilft, Einkaufslisten f
 - **Item-Konfiguration:** Hinzufügen von Items mit Wunschmenge und Qualität.
 - **Auctionator Integration:** Exportiert die Listen direkt in das Einkaufslisten-Format von Auctionator, wenn das Auktionshaus geöffnet wird.
 - **Import/Export:** Teile deine Listen mit anderen Spielern über generierte Strings (Base64).
-- **Automatische Bereinigung:** Entfernt temporäre RSL-Listen aus Auctionator beim Schließen des Auktionshauses.
 
 ## Installation
 1. Lade das Addon herunter.
