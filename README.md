@@ -23,3 +23,6 @@ RestockShoppingList is a World of Warcraft addon that helps you manage shopping 
 
 ## Commands
 - `/rsl` - Toggles the configuration window.
+
+## Befehle (German Commands)
+- `/rsl` - Öffnet oder schließt das Konfigurationsfenster.
