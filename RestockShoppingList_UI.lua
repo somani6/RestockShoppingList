@@ -441,10 +441,7 @@ function UI:RefreshItems()
         spacer3:SetWidth(10)
         itemGroup:AddChild(spacer3)
 
-        local price = 0
-        if Auctionator and Auctionator.API and Auctionator.API.v1 and Auctionator.API.v1.GetAuctionPriceByItemID then
-            price = Auctionator.API.v1.GetAuctionPriceByItemID("RestockShoppingList", item.itemID) or 0
-        end
+        local price = Auctionator.API.v1.GetAuctionPriceByItemID("RestockShoppingList", item.itemID) or 0
 
         local priceLabel = AceGUI:Create("Label")
         if price > 0 then
