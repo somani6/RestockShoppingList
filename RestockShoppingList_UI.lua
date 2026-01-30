@@ -398,6 +398,26 @@ function UI:RefreshItems()
         local iconLabel = AceGUI:Create("Label")
         iconLabel:SetText("|T"..iconTexture..":24:24|t")
         iconLabel:SetWidth(30)
+
+        iconLabel.frame:EnableMouse(true)
+        iconLabel.frame:SetScript("OnEnter", function()
+            GameTooltip:SetOwner(iconLabel.frame, "ANCHOR_TOPRIGHT")
+            GameTooltip:SetItemByID(item.itemID)
+            GameTooltip:Show()
+        end)
+        iconLabel.frame:SetScript("OnLeave", function()
+            GameTooltip:Hide()
+        end)
+
+        local oldIconOnRelease = iconLabel.OnRelease
+        iconLabel.OnRelease = function(self)
+            self.frame:EnableMouse(false)
+            self.frame:SetScript("OnEnter", nil)
+            self.frame:SetScript("OnLeave", nil)
+            self.OnRelease = oldIconOnRelease
+            if oldIconOnRelease then oldIconOnRelease(self) end
+        end
+
         itemGroup:AddChild(iconLabel)
 
         local itemName = GetItemInfo(item.itemID) or (L["ITEM_FALLBACK"]:format(item.itemID))
