@@ -1,11 +1,8 @@
 -- RestockShoppingList.lua
--- RestockShoppingList.lua (Core Logic)
-
 local addonName, addonTable = ...
 local RestockShoppingList = LibStub("AceAddon-3.0"):NewAddon(addonName, "AceConsole-3.0", "AceEvent-3.0", "AceSerializer-3.0")
 addonTable.Core = RestockShoppingList
 
--- Default values for the database
 local defaults = {
     char = {
         lists = {}
@@ -13,7 +10,6 @@ local defaults = {
 }
 
 function RestockShoppingList:OnInitialize()
-    -- Load database
     self.db = LibStub("AceDB-3.0"):New("RestockShoppingListDB", defaults, true)
     
     -- Polyfill for removed UIDropDownMenu_SetIcon to prevent errors in UI
@@ -21,8 +17,8 @@ function RestockShoppingList:OnInitialize()
         UIDropDownMenu_SetIcon = function() end
     end
 
-    -- Register slash command
     self:RegisterChatCommand("rsl", "ToggleUI")
+    self:SetupOptions()
 end
 
 function RestockShoppingList:ToggleUI()
@@ -42,4 +38,33 @@ end
 
 function RestockShoppingList:AUCTION_HOUSE_CLOSED()
         self:CleanupAuctionatorLists()
+end
+
+function RestockShoppingList:SetupOptions()
+    local L = LibStub("AceLocale-3.0"):GetLocale(addonName)
+    local panel = CreateFrame("Frame", "RestockShoppingListOptionsPanel", UIParent)
+    panel.name = "RestockShoppingList"
+    
+    local title = panel:CreateFontString(nil, "ARTWORK", "GameFontNormalLarge")
+    title:SetPoint("TOPLEFT", 16, -16)
+    title:SetText(L["TITLE"])
+
+    local text = panel:CreateFontString(nil, "ARTWORK", "GameFontHighlight")
+    text:SetPoint("TOPLEFT", title, "BOTTOMLEFT", 0, -16)
+    text:SetText(L["OPTIONS_INFO"])
+
+    local btn = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
+    btn:SetPoint("TOPLEFT", text, "BOTTOMLEFT", 0, -20)
+    btn:SetText(L["OPTIONS_OPEN_BUTTON"])
+    btn:SetWidth(150)
+    btn:SetScript("OnClick", function()
+        self:ToggleUI()
+    end)
+
+    if Settings and Settings.RegisterCanvasLayoutCategory then
+        local category, layout = Settings.RegisterCanvasLayoutCategory(panel, "RestockShoppingList")
+        Settings.RegisterAddOnCategory(category)
+    else
+        InterfaceOptions_AddCategory(panel)
+    end
 end

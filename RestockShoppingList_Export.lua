@@ -20,7 +20,6 @@ function Core:ImportList(dataString)
         return false
     end
 
-    -- Check if list exists (case-insensitive) to update
     local existingIndex = nil
     for i, l in ipairs(self.db.char.lists) do
         if strlower(l.name) == strlower(list.name) then

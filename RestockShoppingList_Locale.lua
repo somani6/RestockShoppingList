@@ -29,6 +29,9 @@ if L then
     L["MSG_LIST_UPDATED"] = "List '%s' has been updated."
     L["MSG_LIST_IMPORTED"] = "List '%s' has been imported."
     L["ITEM_FALLBACK"] = "Item %s"
+    L["DRAG_DROP_INFO"] = "You can drag and drop items into this window to add them."
+    L["OPTIONS_INFO"] = "You can open the addon using /rsl"
+    L["OPTIONS_OPEN_BUTTON"] = "Open UI"
 end
 
 local L = LibStub("AceLocale-3.0"):NewLocale(addonName, "deDE")
@@ -60,6 +63,9 @@ if L then
     L["MSG_LIST_UPDATED"] = "Liste '%s' wurde aktualisiert."
     L["MSG_LIST_IMPORTED"] = "Liste '%s' wurde importiert."
     L["ITEM_FALLBACK"] = "Item %s"
+    L["DRAG_DROP_INFO"] = "Du kannst Items per Drag & Drop in dieses Fenster ziehen, um sie hinzuzufügen."
+    L["OPTIONS_INFO"] = "Das AddOn kann mit dem Befehl /rsl geöffnet werden."
+    L["OPTIONS_OPEN_BUTTON"] = "UI Öffnen"
 end
 
 local L = LibStub("AceLocale-3.0"):NewLocale(addonName, "frFR")
@@ -91,6 +97,9 @@ if L then
     L["MSG_LIST_UPDATED"] = "La liste '%s' a été mise à jour."
     L["MSG_LIST_IMPORTED"] = "La liste '%s' a été importée."
     L["ITEM_FALLBACK"] = "Objet %s"
+    L["DRAG_DROP_INFO"] = "Vous pouvez glisser-déposer des objets dans cette fenêtre pour les ajouter."
+    L["OPTIONS_INFO"] = "Vous pouvez ouvrir l'addon avec /rsl"
+    L["OPTIONS_OPEN_BUTTON"] = "Ouvrir l'interface"
 end
 
 local L = LibStub("AceLocale-3.0"):NewLocale(addonName, "esES") or LibStub("AceLocale-3.0"):NewLocale(addonName, "esMX")
@@ -122,6 +131,9 @@ if L then
     L["MSG_LIST_UPDATED"] = "La lista '%s' ha sido actualizada."
     L["MSG_LIST_IMPORTED"] = "La lista '%s' ha sido importada."
     L["ITEM_FALLBACK"] = "Objeto %s"
+    L["DRAG_DROP_INFO"] = "Puedes arrastrar y soltar objetos en esta ventana para añadirlos."
+    L["OPTIONS_INFO"] = "Puedes abrir el addon usando /rsl"
+    L["OPTIONS_OPEN_BUTTON"] = "Abrir interfaz"
 end
 
 local L = LibStub("AceLocale-3.0"):NewLocale(addonName, "ptBR")
@@ -153,6 +165,9 @@ if L then
     L["MSG_LIST_UPDATED"] = "A lista '%s' foi atualizada."
     L["MSG_LIST_IMPORTED"] = "A lista '%s' foi importada."
     L["ITEM_FALLBACK"] = "Item %s"
+    L["DRAG_DROP_INFO"] = "Você pode arrastar e soltar itens nesta janela para adicioná-los."
+    L["OPTIONS_INFO"] = "Você pode abrir o addon usando /rsl"
+    L["OPTIONS_OPEN_BUTTON"] = "Abrir interface"
 end
 
 local L = LibStub("AceLocale-3.0"):NewLocale(addonName, "zhCN")
@@ -184,6 +199,9 @@ if L then
     L["MSG_LIST_UPDATED"] = "列表 '%s' 已更新。"
     L["MSG_LIST_IMPORTED"] = "列表 '%s' 已导入。"
     L["ITEM_FALLBACK"] = "物品 %s"
+    L["DRAG_DROP_INFO"] = "您可以将物品拖放到此窗口中以添加它们。"
+    L["OPTIONS_INFO"] = "您可以使用 /rsl 打开插件"
+    L["OPTIONS_OPEN_BUTTON"] = "打开界面"
 end
 
 local L = LibStub("AceLocale-3.0"):NewLocale(addonName, "ruRU")
@@ -215,6 +233,9 @@ if L then
     L["MSG_LIST_UPDATED"] = "Список '%s' обновлен."
     L["MSG_LIST_IMPORTED"] = "Список '%s' импортирован."
     L["ITEM_FALLBACK"] = "Предмет %s"
+    L["DRAG_DROP_INFO"] = "Вы можете перетащить предметы в это окно, чтобы добавить их."
+    L["OPTIONS_INFO"] = "Вы можете открыть аддон с помощью /rsl"
+    L["OPTIONS_OPEN_BUTTON"] = "Открыть интерфейс"
 end
 
 local L = LibStub("AceLocale-3.0"):NewLocale(addonName, "itIT")
@@ -246,4 +267,7 @@ if L then
     L["MSG_LIST_UPDATED"] = "La lista '%s' è stata aggiornata."
     L["MSG_LIST_IMPORTED"] = "La lista '%s' è stata importata."
     L["ITEM_FALLBACK"] = "Oggetto %s"
+    L["DRAG_DROP_INFO"] = "Puoi trascinare e rilasciare oggetti in questa finestra per aggiungerli."
+    L["OPTIONS_INFO"] = "Puoi aprire l'addon usando /rsl"
+    L["OPTIONS_OPEN_BUTTON"] = "Apri interfaccia"
 end

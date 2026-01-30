@@ -12,14 +12,12 @@ function UI:UpdateControlStates()
     if not self.frame then return end
     local listSelected = (currentListIndex ~= nil)
 
-    -- List modification buttons
     self.deleteListButton:SetDisabled(not listSelected)
     self.renameListButton:SetDisabled(not listSelected)
     if self.exportListButton then
         self.exportListButton:SetDisabled(not listSelected)
     end
 
-    -- Add item controls
     self.addItemEdit:SetDisabled(not listSelected)
     self.addItemButton:SetDisabled(not listSelected)
 end
@@ -33,11 +31,19 @@ function UI:Initialize()
     self.frame:SetLayout("Flow")
     self.frame:SetWidth(755)
 
-    -- Enable closing with Escape key
     _G["RestockShoppingListFrame"] = self.frame.frame
     table.insert(UISpecialFrames, "RestockShoppingListFrame")
     
-    -- Container for list selection controls
+    local function OnReceiveDrag()
+        local infoType, itemID, itemLink = GetCursorInfo()
+        if infoType == "item" then
+            self:HandleAddItem(itemLink)
+            ClearCursor()
+        end
+    end
+    self.frame.frame:SetScript("OnReceiveDrag", OnReceiveDrag)
+    self.frame.frame:HookScript("OnMouseUp", OnReceiveDrag)
+
     local topContainer = AceGUI:Create("SimpleGroup")
     topContainer:SetLayout("Flow")
     topContainer:SetFullWidth(true)
@@ -112,13 +118,11 @@ function UI:Initialize()
     end)
     topContainer:AddChild(self.importListButton)
 
-    -- Visual separator
     local separator = AceGUI:Create("Heading")
     separator:SetText("")
     separator:SetFullWidth(true)
     self.frame:AddChild(separator)
 
-    -- Container for Add Item controls
     local addItemContainer = AceGUI:Create("SimpleGroup")
     addItemContainer:SetLayout("Flow")
     addItemContainer:SetFullWidth(true)
@@ -144,14 +148,32 @@ function UI:Initialize()
     end)
     addItemContainer:AddChild(self.addItemButton)
 
-    -- Container for the item list
+    local dragDropLabel = AceGUI:Create("Label")
+    dragDropLabel:SetText(L["DRAG_DROP_INFO"])
+    dragDropLabel:SetColor(0.5, 0.5, 0.5)
+    dragDropLabel:SetFullWidth(true)
+    self.frame:AddChild(dragDropLabel)
+
+    local spacer = AceGUI:Create("Label")
+    spacer:SetText(" ")
+    spacer:SetFullWidth(true)
+    self.frame:AddChild(spacer)
+
     self.itemScroll = AceGUI:Create("ScrollFrame")
     self.itemScroll:SetLayout("List")
     self.itemScroll:SetFullWidth(true)
     self.itemScroll:SetFullHeight(true)
     self.frame:AddChild(self.itemScroll)
+    self.itemScroll.frame:SetScript("OnReceiveDrag", OnReceiveDrag)
+    self.itemScroll.frame:HookScript("OnMouseUp", OnReceiveDrag)
     
-    -- Popups
+    self:RegisterPopups()
+
+    self:RefreshLists()
+    self:UpdateControlStates()
+end
+
+function UI:RegisterPopups()
     StaticPopupDialogs["RSL_NEW_LIST"] = {
         text = L["NEW_LIST_POPUP_TEXT"],
         button1 = L["CREATE"],
@@ -254,36 +276,20 @@ function UI:Initialize()
         whileDead = true,
         hideOnEscape = true,
     }
-
-    self:RefreshLists()
-    self:UpdateControlStates()
 end
 
 function UI:HandleAddItem(text)
-    if not currentListIndex then
-        -- This check is now backed up by disabled controls
-        return false
-    end
-    if text == "" then return false end
+    if not currentListIndex or text == "" then return false end
 
-    local itemID
-    if string.match(text, "item:(%d+)") then
-        itemID = tonumber(string.match(text, "item:(%d+)"))
-    elseif tonumber(text) then
-        itemID = tonumber(text)
-    else
-        local _, link = GetItemInfo(text)
-        if link then
-            itemID = tonumber(string.match(link, "item:(%d+)"))
-        end
-    end
+    local itemID = Core:ResolveItemID(text)
 
     if not itemID then
         Core:Print(L["ERROR_ITEM_NOT_FOUND"]:format(text))
         return false
     end
 
-    Core:AddItemToList(currentListIndex, itemID, 1, 3)
+    local qty, quality = Core:GetItemDefaults(itemID)
+    Core:AddItemToList(currentListIndex, itemID, qty, quality)
     return true
 end
 
@@ -313,7 +319,6 @@ function UI:RefreshItems()
     local list = Core:GetLists()[currentListIndex]
     if not list then return end
 
-    -- Header
     local headerGroup = AceGUI:Create("SimpleGroup")
     headerGroup:SetLayout("Flow")
     --headerGroup:SetWidth(800)
@@ -351,7 +356,7 @@ function UI:RefreshItems()
 
     local qualityLabel = AceGUI:Create("Label")
     qualityLabel:SetText(L["HEADER_QUALITY"])
-    qualityLabel:SetWidth(75)
+    qualityLabel:SetWidth(95)
     headerGroup:AddChild(qualityLabel)
 
     local spacer3 = AceGUI:Create("Label")
@@ -374,7 +379,6 @@ function UI:RefreshItems()
         itemGroup:SetLayout("Flow")
         itemGroup:SetFullWidth(true)
 
-        -- Background for table look (Zebra-Striping)
         local bg = itemGroup.frame.rsl_bg
         if not bg then
             bg = itemGroup.frame:CreateTexture(nil, "BACKGROUND")
@@ -431,7 +435,7 @@ function UI:RefreshItems()
         }
         qualityDropdown:SetList(qualityList)
         qualityDropdown:SetValue(item.quality)
-        qualityDropdown:SetWidth(75)
+        qualityDropdown:SetWidth(95)
         qualityDropdown:SetCallback("OnValueChanged", function(widget, event, key)
             Core:UpdateItem(currentListIndex, i, tonumber(qtyEdit:GetText()) or 1, key)
             item.quality = key -- Update our local copy for the qtyEdit callback
