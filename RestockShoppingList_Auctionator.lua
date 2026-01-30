@@ -19,6 +19,8 @@ function Core:ExportToAuctionator()
             if item.quality == 1 then tierStr = "1"
             elseif item.quality == 2 then tierStr = "2"
             elseif item.quality == 3 then tierStr = "3"
+            elseif item.quality == 4 then tierStr = "4"
+            elseif item.quality == 5 then tierStr = "5"
             end
             local rsl_itemCount = C_Item.GetItemCount(item.itemID, true, true, true, true)
             if itemName and item.qty > rsl_itemCount then

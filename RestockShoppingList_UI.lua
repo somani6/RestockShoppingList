@@ -27,9 +27,8 @@ end
 function UI:Initialize()
     if self.frame then return end
 
-    self.frame = AceGUI:Create("Frame")
+    self.frame = AceGUI:Create("Window")
     self.frame:SetTitle(L["TITLE"])
-    self.frame:SetStatusText(L["TITLE"])
     self.frame:SetCallback("OnClose", function(widget) widget.frame:Hide() end)
     self.frame:SetLayout("Flow")
     self.frame:SetWidth(755)
@@ -426,7 +425,9 @@ function UI:RefreshItems()
             [0] = L["QUALITY_ANY"],
             [1] = "|A:Professions-Icon-Quality-Tier1-Small:16:16|a",
             [2] = "|A:Professions-Icon-Quality-Tier2-Small:16:16|a",
-            [3] = "|A:Professions-Icon-Quality-Tier3-Small:16:16|a"
+            [3] = "|A:Professions-Icon-Quality-Tier3-Small:16:16|a",
+            [4] = "|A:Professions-Icon-Quality-12-Tier1-Small:16:16|a",
+            [5] = "|A:Professions-Icon-Quality-12-Tier2-Small:16:16|a"
         }
         qualityDropdown:SetList(qualityList)
         qualityDropdown:SetValue(item.quality)

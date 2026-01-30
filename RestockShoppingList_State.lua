@@ -57,7 +57,7 @@ function Core:AddItemToList(listIndex, itemID, qty, quality)
     table.insert(self.db.char.lists[listIndex].items, {
         itemID = itemID,
         qty = qty or 1,
-        quality = quality or 0 -- 0=Egal, 1=T1, 2=T2, 3=T3
+        quality = quality or 0 -- 0=Egal, 1=T1, 2=T2, 3=T3, 4=T4, 5=T5
     })
 
     table.sort(self.db.char.lists[listIndex].items, function(a, b)
